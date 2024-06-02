@@ -1,15 +1,15 @@
 #include "Grid.h"
 
-
-void Grid::setupGrid() {
-
+Grid::Grid(Rectangle rec) :
+    container(rec)
+{
     for (int i = 0; i < COLS; i++)
     {
         for (int j = 0; j < ROWS; j++)
         {
             grid[i][j] = (Grid::Cell){
-                .i = i,
-                .j = j,
+                .y = i,
+                .x = j,
                 .rec = Rectangle {
                     .x = container.x + (i * cellWidth),
                     .y = container.y + (j * cellHeight),
@@ -17,10 +17,20 @@ void Grid::setupGrid() {
                     .height = static_cast<float>(cellHeight)
                 }
             };
-
+            grid[i][j].source = {
+                0.f,
+                0.f,
+                static_cast<float>(grid[i][j].tex.width), static_cast<float>(grid[i][j].tex.height)
+            };
+            grid[i][j].dest = {
+                    grid[i][j].rec.x + cellWidth / 7.5f,
+                    grid[i][j].rec.y + cellHeight / 7.5f,
+                    grid[i][j].rec.width * scale,
+                    grid[i][j].rec.height * scale
+            };
         }
     }
-}
+};
 
 void Grid::drawGrid() {
     DrawRectangle(container.x, container.y, container.width, container.height, WHITE);
@@ -29,13 +39,15 @@ void Grid::drawGrid() {
         for (int j = 0; j < ROWS; j++)
         {
             DrawRectangleLines(container.x + (i * cellWidth), container.y + (j * cellHeight), cellWidth, cellHeight, BLACK);
+            DrawTexturePro(grid[i][j].tex, grid[i][j].source, grid[i][j].dest, Vector2{}, 0.f, WHITE);
         }
     }
 }
 
-void Grid::setTexture(Texture2D texture, Cell cell) {
-    cell.tex = texture;
-    Vector2 pos = { cell.rec.x + cellWidth / 6, cell.rec.y + cellHeight / 6 };
-    DrawTextureEx(cell.tex, pos, {}, scale, WHITE);
-    cell.blank = false;
+void Grid::setTexture(Texture2D texture, int row, int col) {
+    if (grid[col][row].blank)
+    {
+        grid[col][row].tex = texture;
+        grid[col][row].blank;
+    }
 };

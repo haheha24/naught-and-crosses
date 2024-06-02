@@ -3,34 +3,35 @@
 
 #include "raylib.h"
 #include "raymath.h"
+#include <iostream>
 
 class Grid {
 public:
-    Grid(Rectangle rec) :
-        container(rec)
-    {};
+    Grid(Rectangle rec);
     struct Cell
     {
-        int i;
-        int j;
+        int y{}; //col
+        int x{};  //row
         bool blank{ true };
-        Texture2D tex;
-        Rectangle rec;
+        int player{};
+        Texture2D tex{ LoadTexture("textures/blank.png") };
+        Rectangle rec{};
+        Rectangle source{};
+        Rectangle dest{};
     };
-    void setupGrid();
     void drawGrid();
-    void setTexture(Texture2D texture, Cell cell);
-    Cell getGridElement(int col, int row) { return grid[col][row]; }
+    Vector2 getCellPos(int col, int row) { return Vector2{ static_cast<float>(grid[col][row].x), static_cast<float>(grid[col][row].y) }; }
+    void setTexture(Texture2D texture, int row, int col);
+    Rectangle getCellRec(int col, int row) { return  grid[col][row].rec; }
 
 protected:
     Rectangle container{};
     static const int COLS{ 3 };
     static const int ROWS{ 3 };
+    Cell grid[COLS][ROWS];
     const int cellWidth{ static_cast<int>(container.width) / COLS };
     const int cellHeight{ static_cast<int>(container.height) / ROWS };
-    Cell grid[COLS][ROWS];
-    float scale{ 0.25 };
-private:
+    float scale{ 0.75 };
 
 };
 
