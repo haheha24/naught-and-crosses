@@ -26,20 +26,16 @@ int main()
     SetTargetFPS(60);
     while (!WindowShouldClose())
     {
+        // update logic
         mousePoint = GetMousePosition();
 
-        for (int i = 0; i < 3; i++)
+        if (grid.getTurn())
         {
-            for (int j = 0; j < 3; j++)
-            {
-                if (CheckCollisionPointRec(mousePoint, grid.getCellRec(i, j)))
-                {
-                    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-                    {
-                        grid.setTexture(cross, grid.getCellPos(i, j).x, grid.getCellPos(i, j).y);
-                    }
-                };
-            }
+            grid.setTexture(naught, mousePoint);
+        }
+        else if (!grid.getTurn())
+        {
+            grid.setTexture(cross, mousePoint);
         }
 
         // begin drawing

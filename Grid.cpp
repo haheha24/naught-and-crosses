@@ -44,10 +44,21 @@ void Grid::drawGrid() {
     }
 }
 
-void Grid::setTexture(Texture2D texture, int row, int col) {
-    if (grid[col][row].blank)
+void Grid::setTexture(Texture2D texture, Vector2 mousePoint) {
+    for (int i = 0; i < COLS; i++)
     {
-        grid[col][row].tex = texture;
-        grid[col][row].blank;
+        for (int j = 0; j < ROWS; j++)
+        {
+            if (
+                CheckCollisionPointRec(mousePoint, grid[i][j].rec) &&
+                IsMouseButtonPressed(MOUSE_BUTTON_LEFT) &&
+                grid[i][j].blank
+                )
+            {
+                grid[i][j].tex = texture;
+                grid[i][j].blank = false;
+                Grid::nextTurn();
+            };
+        }
     }
 };
