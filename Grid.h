@@ -19,9 +19,11 @@ public:
     };
     void drawGrid();
     void setTexture(Texture2D texture, Vector2 mousePoint);
+    
     // true == naught, false == cross (starts as true)
     bool getTurn() { return turn; }
     void nextTurn() { turn = !turn; }
+    void reset() { resetGrid = true; }
 protected:
     Rectangle container{};
     static const int COLS{ 3 };
@@ -30,8 +32,10 @@ protected:
     const int cellWidth{ static_cast<int>(container.width) / COLS };
     const int cellHeight{ static_cast<int>(container.height) / ROWS };
     float scale{ 0.75 };
+    bool resetGrid{ false };
 private:
     bool turn{ true };
+
 };
 
 #endif // !GRID_H

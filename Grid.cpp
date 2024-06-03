@@ -34,6 +34,18 @@ Grid::Grid(Rectangle rec) :
 
 void Grid::drawGrid() {
     DrawRectangle(container.x, container.y, container.width, container.height, WHITE);
+    if (resetGrid)
+    {
+        for (int i = 0; i < COLS; i++)
+        {
+            for (int j = 0; j < ROWS; j++)
+            {
+                grid[i][j].tex = LoadTexture("textures/blank.png");
+                grid[i][j].blank = true;
+            }
+        }
+        resetGrid = false;
+    }
     for (int i = 0; i < COLS; i++)
     {
         for (int j = 0; j < ROWS; j++)
